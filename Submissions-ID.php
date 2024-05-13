@@ -13,10 +13,29 @@ Version: 1.0.0
 Author URI: https://schwarzer-falke.org/
 */
 
-add_action('elementor_pro/forms/new_record', 'modify_elementor_email_content', 10, 2);
-function modify_elementor_email_content($record, $handler)
+// Define a class for your functionality
+class My_Elementor_Customizations
 {
-    $email_content = $handler->get_settings('email_content');
-    $email_content .= "\n\nAdditional text added by the plugin.";
-    $handler->set_settings('email_content', $email_content);
+
+    // Constructor to initialize hooks
+    public function __construct()
+    {
+        add_filter('elementor_pro/forms/wp_mail_message', array($this, 'add_custom_text_to_email'), 10, 3);
+    }
+
+    // Method to add custom text to the email
+    public function add_custom_text_to_email($message)
+    {
+        // Modify $message as needed, adding your custom text
+        $custom_text = "----------------------------- This is custom text added to the email.\n";
+
+        // Append the custom text to the existing message
+        $message .= $custom_text;
+
+        // Return the modified message
+        return $message;
+    }
 }
+
+// Instantiate the class
+new My_Elementor_Customizations();
