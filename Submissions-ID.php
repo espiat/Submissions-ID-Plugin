@@ -32,11 +32,14 @@ class My_Elementor_Customizations
      */
     public function __construct()
     {
-        global $wpdb;
-        $this->submissions_table = $wpdb->prefix . 'e_submissions';
+        // Check if it's the WordPress frontend
+        if (!is_admin()) {
+            global $wpdb;
+            $this->submissions_table = $wpdb->prefix . 'e_submissions';
 
-        add_action('init', array($this, 'register_get_submission_id_shortcode'));
-        add_filter('elementor_pro/forms/wp_mail_message', array($this, 'add_custom_text_to_email'), 10, 1);
+            add_action('init', array($this, 'register_get_submission_id_shortcode'));
+            add_filter('elementor_pro/forms/wp_mail_message', array($this, 'add_custom_text_to_email'), 10, 1);
+        }
     }
 
     /**
